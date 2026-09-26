@@ -30,6 +30,31 @@ def list_entries(
     return PageResult(items=items, total=total, page=page, size=size)
 
 
+@router.get("/overview")
+def sample_overview(
+    keyword: str | None = Query(default=None, description="按样品编号检索"),
+    status: str | None = Query(default=None, description="待接收、已接收、已退回、已废弃"),
+    client: str | None = Query(default=None, description="按委托单位检索"),
+    sample_type: str | None = Query(default=None, alias="sampleType", description="按样品类型检索"),
+    sample_name: str | None = Query(default=None, alias="sampleName", description="按样品名称检索"),
+) -> dict[str, Any]:
+    """集中返回样品概览卡片与同口径列表，保证数量和当前记录一致。"""
+    return service.overview(
+        keyword=keyword,
+        status=status,
+        client=client,
+        sample_type=sample_type,
+        sample_name=sample_name,
+    )
+
+
+@router.get("/export")
+def export_entries() -> dict[str, Any]:
+    """导出样品接收清单：返回当前过滤条件下的全量数据。"""
+    items, total = service.list_entries(page=1, size=10000)
+    return {"module": "sample", "total": total, "items": items}
+
+
 @router.get("/{entry_id}", response_model=dict)
 def get_entry(entry_id: int) -> dict:
     """读取单条检测样品明细；不存在时给出可读的错误说明。"""
@@ -56,10 +81,3 @@ def run_action(entry_id: int, payload: EntryPayload) -> ActionResult:
     if entry is None:
         return ActionResult(ok=False, message=message)
     return ActionResult(ok=True, message=message, entry=entry)
-
-
-@router.get("/export")
-def export_entries() -> dict[str, Any]:
-    """导出样品接收清单：返回当前过滤条件下的全量数据。"""
-    items, total = service.list_entries(page=1, size=10000)
-    return {"module": "sample", "total": total, "items": items}

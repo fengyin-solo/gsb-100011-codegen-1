@@ -6,6 +6,7 @@
         <p class="page-desc">维护检测样品，围绕样品编号、样品名称、委托单位、样品类型做登记、筛选与状态流转。</p>
       </div>
       <div class="page-actions">
+        <RouterLink class="btn" to="/sample/overview">打开接收概览</RouterLink>
         <button class="btn primary" type="button" @click="openCreate">登记检测样品</button>
         <button class="btn" type="button" @click="exportRows">导出样品接收清单</button>
       </div>

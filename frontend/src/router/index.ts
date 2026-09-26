@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Dashboard from '@/views/Dashboard.vue'
 const Sample = () => import('@/views/sample/index.vue')
+const SampleOverview = () => import('@/views/sample/Overview.vue')
 const Task = () => import('@/views/task/index.vue')
 const Instrument = () => import('@/views/instrument/index.vue')
 const Calibration = () => import('@/views/calibration/index.vue')
@@ -24,6 +25,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', name: 'dashboard', component: Dashboard },
+    { path: '/sample/overview', name: 'sample-overview', component: SampleOverview },
     { path: '/sample', name: 'sample', component: Sample },
     { path: '/task', name: 'task', component: Task },
     { path: '/instrument', name: 'instrument', component: Instrument },
