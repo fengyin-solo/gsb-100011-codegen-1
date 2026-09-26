@@ -15,6 +15,23 @@ class PageResult(BaseModel, Generic[T]):
     size: int = 20
 
 
+class StatCard(BaseModel):
+    """概览视图里的统计卡片。"""
+
+    label: str
+    value: int
+
+
+class OverviewResult(BaseModel, Generic[T]):
+    """概览视图返回结构：统计卡片与筛选列表同源一次取回。"""
+
+    stats: list[StatCard]
+    items: list[T]
+    total: int
+    page: int = 1
+    size: int = 20
+
+
 class ActionResult(BaseModel):
     ok: bool
     message: str
